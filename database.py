@@ -1,5 +1,3 @@
-# app/database.py
-
 import mysql.connector
 from mysql.connector import MySQLConnection
 
@@ -17,7 +15,6 @@ def init_db():
     conn = get_connection()
     cursor = conn.cursor()
     try:
-        # Таблиця користувачів
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS Users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -27,7 +24,6 @@ def init_db():
                 password VARCHAR(255)
             );
         """)
-        # Таблиця додатків
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS Apps (
                 id INT AUTO_INCREMENT PRIMARY KEY,
