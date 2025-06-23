@@ -1,5 +1,3 @@
-# app/upload_csv.py
-
 from fastapi import UploadFile
 from .database import insert_user, insert_app, get_connection
 import csv
@@ -17,9 +15,7 @@ async def process_uploaded_csv(file: UploadFile):
     reader = csv.DictReader(StringIO(text))
     fields = reader.fieldnames or []
 
-    # Визначаємо, яку таблицю оновлювати
     if 'userId' in fields:
-        # Очищення Users
         conn = get_connection()
         cur = conn.cursor()
         cur.execute("DELETE FROM Users")
@@ -28,7 +24,6 @@ async def process_uploaded_csv(file: UploadFile):
         cur.close()
         conn.close()
 
-        # Вставка користувачів
         for row in reader:
             if row.get('userId') and row.get('name') and row.get('email') and row.get('password'):
                 insert_user({
@@ -39,7 +34,6 @@ async def process_uploaded_csv(file: UploadFile):
                 })
 
     elif 'appId' in fields:
-        # Очищення Apps
         conn = get_connection()
         cur = conn.cursor()
         cur.execute("DELETE FROM Apps")
@@ -48,7 +42,6 @@ async def process_uploaded_csv(file: UploadFile):
         cur.close()
         conn.close()
 
-        # Вставка додатків
         for row in reader:
             if all(row.get(k) for k in ('appId','appName','description','category','version','size')):
                 insert_app({
@@ -61,5 +54,4 @@ async def process_uploaded_csv(file: UploadFile):
                 })
 
     else:
-        # Нічого не розпізнали
         raise ValueError("CSV file must contain either 'userId' or 'appId' column")
