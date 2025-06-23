@@ -14,19 +14,16 @@ from pathlib import Path
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Ініціалізація бази даних
     init_db()
 
     base_dir = Path(__file__).parent.parent / 'data'
 
-    # Авто-імпорт users.csv
     users_path = base_dir / 'users.csv'
     if users_path.exists():
         upload_file = UploadFile(filename='users.csv', file=users_path.open('rb'))
         await process_uploaded_csv(upload_file)
         upload_file.file.close()
 
-    # Авто-імпорт apps.csv
     apps_path = base_dir / 'apps.csv'
     if apps_path.exists():
         upload_file = UploadFile(filename='apps.csv', file=apps_path.open('rb'))
