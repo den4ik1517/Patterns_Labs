@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Apps & Users List</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { margin-bottom: 10px; }
+        .tabs { margin-bottom: 20px; }
+        .tab-button {
+            padding: 10px 20px;
+            margin-right: 5px;
+            background-color: #eee;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .tab-button.active { background-color: #ddd; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+        th { background-color: #f0f0f0; }
+    </style>
+</head>
+<body>
+
+<h1>Apps and Users</h1>
+
+<div class="tabs">
+    <button class="tab-button active" onclick="showTab('apps')">Apps</button>
+    <button class="tab-button" onclick="showTab('users')">Users</button>
+</div>
+
+<div id="apps" class="tab-content">
+    <h2>Apps</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>App ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Version</th>
+                <th>Size (MB)</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for app in apps %}
+            <tr>
+                <td>{{ app.appId }}</td>
+                <td>{{ app.appName }}</td>
+                <td>{{ app.description }}</td>
+                <td>{{ app.category }}</td>
+                <td>{{ app.version }}</td>
+                <td>{{ app.size }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div id="users" class="tab-content" style="display:none;">
+    <h2>Users</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Password</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.userId }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.password }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function showTab(tabName) {
+        const tabs = document.querySelectorAll('.tab-content');
+        tabs.forEach(tab => tab.style.display = 'none');
+
+        const buttons = document.querySelectorAll('.tab-button');
+        buttons.forEach(btn => btn.classList.remove('active'));
+
+        document.getElementById(tabName).style.display = 'block';
+        event.currentTarget.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
